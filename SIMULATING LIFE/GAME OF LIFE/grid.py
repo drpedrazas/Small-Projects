@@ -1,5 +1,4 @@
 import numpy as np
-from zeroconf import current_time_millis
 
 class board():
     def __init__(self, ones, size, generations):
@@ -8,10 +7,10 @@ class board():
         self.grid = np.zeros((self.size, self.size))
         for i,j in ones:
             self.grid[i,j] = 1
-        self.history = [self.grid]
+        self.history = [np.array(self.grid, copy=True)]
         self.generations = generations
         self.iterate()
-        
+
     def iterate(self):
         current_iteration = self.generations
         while current_iteration > 0:
@@ -32,7 +31,10 @@ class board():
                         else:
                             neighbors = self.grid[i+1,j] + self.grid[i+1,j+1] + self.grid[i-1,j] + self.grid[i-1,j+1] + self.grid[i,j+1]
                     elif i == self.size - 1:
-                        neighbors = self.grid[i-1,j] + self.grid[i-1,j+1] + self.grid[i-1,j-1] + self.grid[i,j+1]  + self.grid[i,j-1]
+                        if j == self.size -1:
+                            neighbors = self.grid[i-1,j] +  self.grid[i-1,j-1] + self.grid[i,j-1]
+                        else:
+                            neighbors = self.grid[i-1,j] + self.grid[i-1,j+1] + self.grid[i-1,j-1] + self.grid[i,j+1]  + self.grid[i,j-1]
                     elif j == self.size -1:
                         neighbors = self.grid[i-1,j] + self.grid[i+1,j] + self.grid[i,j-1] + self.grid[i-1,j-1] + self.grid[i+1,j-1]
                     else:
