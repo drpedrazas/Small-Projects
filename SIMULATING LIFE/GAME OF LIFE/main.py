@@ -12,7 +12,7 @@ def doneq():
     done = False
 button = Button(root, text="Done", command=doneq)
 button.pack()
-grid_size = 100
+grid_size = 30
 dummy_grid = np.zeros((grid_size,grid_size))
 fig = plt.figure(figsize=(5,5))
 ax = plt.axes()
@@ -44,16 +44,17 @@ while done:
         startup_points.append(coord)
     #update the displayed grid
     plt.imshow(dummy_grid,cmap='binary')
-aut = board(startup_points,grid_size,20)
+aut = board(startup_points,grid_size,100)
 def update(frame_num,img):
+    print(frame_num)
     newGrid = aut.history[frame_num]
     img.set_data(newGrid)
-updateInterval = 500
+updateInterval = 100
 grid = dummy_grid
 fig, ax = plt.subplots()
 img = ax.imshow(grid, interpolation='nearest')
 ani = animation.FuncAnimation(fig, update, fargs=(img, ),
-frames=20,
+frames=100,
 interval=updateInterval,
-save_count=50)
+save_count=100)
 plt.show()
